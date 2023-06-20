@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WeddingPlanner</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WeddingPlanner.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 d-flex gap-5">
+            <div class="">
+                @{
+                        if (Context.Session.GetInt32("UserId") != null)
+                        {
+                            <h1>Welcome @Context.Session.GetString("FirstName")</h1>
+                        }
+                        else {
+                            <h1 class="navbar-brand ">WeddingPlanner</h1>
+                        }
+                }
+            </div>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-around align-items-center">
+                    @{
+                        if (Context.Session.GetInt32("UserId") != null)
+                        {
+                            <a asp-action="Dash" asp-controller="Wedding">Home</a>
+
+                            <a asp-action="AddWedding" asp-controller="Wedding">Plan a Wedding</a>
+
+                            <form asp-action="Logout" asp-controller="Home" method="post">
+                                <button type="submit">Logout</button>
+                            </form>
+                        }
+                    }
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Edit A Wedding";
+}
+@model Wedding
+
+<h1>Plan a Wedding</h1>
+<form asp-action="UpdateWedding" asp-controller="Wedding" asp-route-id="@Model.WeddingId" method="post" class="d-flex flex-column gap-5 align-items-start mt-5">
+    <div>
+        <label asp-for="WedderOne"></label>
+        <br>
+        <input asp-for="WedderOne">
+        <br>
+        <span asp-validation-for="WedderOne"></span>
+    </div>
+    <div>
+        <label asp-for="WedderTwo"></label>
+        <br>
+        <input asp-for="WedderTwo">
+        <br>
+        <span asp-validation-for="WedderTwo"></span>
+    </div>
+    <div>
+        <label asp-for="Date"></label>
+        <br>
+        <input asp-for="Date">
+        <br>
+        <span asp-validation-for="Date"></span>
+    </div>
+    <div>
+        <label asp-for="Address"></label>
+        <br>
+        <input asp-for="Address">
+        <br>
+        <span asp-validation-for="Address"></span>
+    </div>
+    <button type="submit">Edit</button>
+</form>

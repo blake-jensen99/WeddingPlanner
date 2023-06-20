@@ -1,0 +1,79 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+@model List<Wedding>
+
+
+
+<div class="text-center">
+    <hr>
+    <table class="table">
+        <thead>
+            <th scope="col">Wedding of</th>
+            <th scope="col">Date</th>
+            <th scope="col">Guest Count</th>
+            <th scope="col">Action</th>
+        </thead>
+        <tbody>
+            @{
+
+                foreach (Wedding wed in @Model)
+                {
+
+                    int count = wed.Attendees.Count();
+
+                    <tr class="">
+                        <td><a asp-action="OneWedding" asp-controller="Wedding" asp-route-id="@wed.WeddingId">@wed.WedderOne & @wed.WedderTwo</a></td>
+                        <td>@wed.Date</td>
+                        <td>@count</td>
+                        @{
+                            if (wed.Creator.UserId == Context.Session.GetInt32("UserId"))
+                            {
+                                <td>
+                                    <Button><a asp-action="EditWedding" asp-controller="Wedding" asp-route-id="@wed.WeddingId">Edit</a></Button>
+                                    <form asp-action="DestroyWedding" asp-controller="Wedding">
+                                        <input type="hidden" name="WeddingId" value="@wed.WeddingId">
+                                        <Button type="submit">Delete</Button>
+                                    </form>
+                                </td>
+                            }
+                            else
+                            {
+                                bool contains = false;
+                                int ID = 0;
+                                foreach (Association ass in wed.Attendees)
+                                {
+                                    if (ass.UserId == Context.Session.GetInt32("UserId"))
+                                    {
+                                        contains = true;
+                                        ID = ass.AssociationId;
+                                    }
+                                }
+                                if (contains)
+                                {
+                                    <td>
+                                        
+                                        <form asp-action="UNRSVP" asp-controller="Wedding" method="post">
+                                            <input type="hidden" name="AssociationId" value="@ID">
+                                            <button type="submit">Un-RSVP</button>
+                                        </form>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <form asp-action="RSVP" asp-controller="Wedding" method="post">
+                                            <input type="hidden" name="WeddingId" value="@wed.WeddingId">
+                                            <button type="submit">RSVP</button>
+                                        </form>
+                                    </td>
+                                }
+                            }
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
